@@ -1,0 +1,1813 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?asciidoc-toc?>
+<?asciidoc-numbered?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xl="http://www.w3.org/1999/xlink" version="5.0" xml:lang="en">
+<info>
+<title>MVC 1.0</title>
+<subtitle>Model-View-Controller Specification</subtitle>
+<date>September 2018</date>
+<author>
+<personname>
+<firstname>Ivar Grimstad, Christian Kaltepoth</firstname>
+</personname>
+</author>
+<authorinitials>I</authorinitials>
+<revhistory>
+<revision>
+<revnumber>1.0 Proposed Final Draft</revnumber>
+<date>September 2018</date>
+<authorinitials>I</authorinitials>
+</revision>
+</revhistory>
+</info>
+<colophon xml:id="_license">
+<title>License</title>
+<simpara>This specification is dual licensed under the JCP License and the Apache 2.0 License.</simpara>
+<simpara role="text-center"><emphasis role="strong">JCP License</emphasis></simpara>
+<simpara>IVAR GRIMSTAD IS WILLING TO LICENSE THIS SPECIFICATION TO YOU ONLY UPON THE CONDITION THAT YOU ACCEPT ALL OF THE TERMS
+CONTAINED IN THIS AGREEMENT. PLEASE READ THE TERMS AND CONDITIONS OF THIS AGREEMENT CAREFULLY. BY DOWNLOADING THIS
+SPECIFICATION, YOU ACCEPT THE TERMS AND CONDITIONS OF THE AGREEMENT. IF YOU ARE NOT WILLING TO BE BOUND BY IT,
+SELECT THE "DECLINE" BUTTON AT THE BOTTOM OF THIS PAGE.</simpara>
+<simpara>Specification:  JSR-371 MVC ("Specification")<?asciidoc-br?>
+Version:  1.0<?asciidoc-br?>
+Status:  Final Release<?asciidoc-br?>
+Specification Lead:  Ivar Grimstad ("Specification Lead")<?asciidoc-br?>
+Release:  Final Release</simpara>
+<simpara>Copyright 2019 Ivar Grimstad (<link xl:href="mailto:ivar.grimstad@gmail.com">ivar.grimstad@gmail.com</link>)<?asciidoc-br?>
+All rights reserved.</simpara>
+<simpara>LIMITED LICENSE GRANTS</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>License for Evaluation Purposes. Specification Lead hereby grants you a fully-paid, non-exclusive, non-transferable,
+worldwide, limited license (without the right to sublicense), under Specification Lead&#8217;s  applicable intellectual
+property rights to view, download, use and reproduce the Specification only for the purpose of internal evaluation.
+This includes (i) developing applications intended to run on an implementation of the Specification, provided that
+such applications do not themselves implement any portion(s) of the Specification, and (ii) discussing the
+Specification with any third party; and (iii) excerpting brief portions of the Specification in oral or written
+communications which discuss the Specification provided that such excerpts do not in the aggregate constitute a
+significant portion of the Specification.</simpara>
+</listitem>
+<listitem>
+<simpara>License for the Distribution of Compliant Implementations. Specification Lead  also grants you a perpetual,
+non-exclusive, non-transferable, worldwide, fully paid-up, royalty free, limited license (without the right to
+sublicense) under any applicable copyrights or, subject to the provisions of subsection 4 below, patent rights it
+may have covering the Specification to create and/or distribute an Independent Implementation of the Specification
+that: (a) fully implements the Specification including all its required interfaces and functionality; (b) does not
+modify, subset, superset or otherwise extend the Licensor Name Space, or include any public or protected packages,
+classes, Java interfaces, fields or methods within the Licensor Name Space other than those required/authorized by
+the Specification or Specifications being implemented; and (c) passes the Technology Compatibility Kit (including
+satisfying the requirements of the applicable TCK Users Guide) for such Specification ("Compliant Implementation").
+In addition, the foregoing license is expressly conditioned on your not acting outside its scope.  No license is
+granted hereunder for any other purpose (including, for example, modifying the Specification, other than to the
+extent of your fair use rights, or distributing the Specification to third parties).  Also, no right, title, or
+interest in or to any trademarks, service marks, or trade names of Specification Lead or Specification Lead&#8217;s
+licensors is granted hereunder.  Java, and Java-related logos, marks and names are trademarks or registered
+trademarks of Oracle America, Inc. in the U.S. and other countries.</simpara>
+</listitem>
+<listitem>
+<simpara>Pass-through Conditions. You need not include limitations (a)-(c) from the previous paragraph or any other particular
+"pass through" requirements in any license You grant concerning the use of your Independent Implementation or
+products derived from it.  However, except with respect to Independent Implementations (and products derived from
+them) that satisfy limitations (a)-(c) from the previous paragraph, You may neither:  (a) grant or otherwise pass
+through to your licensees any licenses under Specification Lead&#8217;s  applicable intellectual property rights; nor
+(b) authorize your licensees to make any claims concerning their implementation&#8217;s compliance with the Specification
+in question.</simpara>
+</listitem>
+<listitem>
+<simpara>Reciprocity Concerning Patent Licenses.</simpara>
+<orderedlist numeration="loweralpha">
+<listitem>
+<simpara>With respect to any patent claims covered by the license granted under subparagraph 2 above that would be
+infringed by all technically feasible implementations of the Specification, such license is conditioned upon your
+offering on fair, reasonable and non-discriminatory terms, to any party seeking it from You, a perpetual,
+non-exclusive, non-transferable, worldwide license under Your patent rights which are or would be infringed by all
+technically feasible implementations of the Specification to develop, distribute and use a Compliant
+Implementation.</simpara>
+</listitem>
+<listitem>
+<simpara>With respect to any patent claims owned by Specification Lead and covered by the license granted under
+subparagraph 2, whether or not their infringement can be avoided in a technically feasible manner when implementing
+the Specification, such license shall terminate with respect to such claims if You initiate a claim against
+Specification Lead that it has, in the course of performing its responsibilities as the Specification Lead,
+induced any other entity to infringe Your patent rights.</simpara>
+</listitem>
+<listitem>
+<simpara>Also with respect to any patent claims owned by Specification Lead and covered by the license granted under
+subparagraph 2 above, where the infringement of such claims can be avoided in a technically feasible manner when
+implementing the Specification such license, with respect to such claims, shall terminate if You initiate a claim
+against Specification Lead  that its making, having made, using, offering to sell, selling or importing a
+Compliant Implementation infringes Your patent rights.</simpara>
+</listitem>
+</orderedlist>
+</listitem>
+<listitem>
+<simpara>Definitions. For the purposes of this Agreement:  "Independent Implementation" shall mean an implementation of the
+Specification that neither derives from any of Specification Lead&#8217;s  source code or binary code materials nor, except
+with an appropriate and separate license from Specification Lead, includes any of Specification Lead&#8217;s  source code or
+binary code materials; "Licensor Name Space" shall mean the public class or interface declarations whose names begin
+with "java", "javax", "com.&lt;Specification Lead&gt;"  or their equivalents in any subsequent naming convention adopted by
+Oracle through the Java Community Process, or any recognized successors or replacements thereof; and "Technology
+Compatibility Kit" or "TCK" shall mean the test suite and accompanying TCK User&#8217;s Guide provided by Specification Lead
+which corresponds to the Specification and that was available either (i) from Specification Lead&#8217;s 120 days before
+the first release of Your Independent Implementation that allows its use for commercial purposes, or (ii) more
+recently than 120 days from such release but against which You elect to test Your implementation of the Specification.</simpara>
+</listitem>
+</orderedlist>
+<simpara>This Agreement will terminate immediately without notice from Specification Lead if you breach the Agreement or act
+outside the scope of the licenses granted above.</simpara>
+<simpara>DISCLAIMER OF WARRANTIES</simpara>
+<simpara>THE SPECIFICATION IS PROVIDED "AS IS". SPECIFICATION LEAD MAKES NO REPRESENTATIONS OR WARRANTIES, EITHER EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT
+(INCLUDING AS A CONSEQUENCE OF ANY PRACTICE OR IMPLEMENTATION OF THE SPECIFICATION), OR THAT THE CONTENTS OF THE
+SPECIFICATION ARE SUITABLE FOR ANY PURPOSE.  This document does not represent any commitment to release or implement
+any portion of the Specification in any product. In addition, the Specification could include technical inaccuracies
+or typographical errors.</simpara>
+<simpara>LIMITATION OF LIABILITY</simpara>
+<simpara>TO THE EXTENT NOT PROHIBITED BY LAW, IN NO EVENT WILL SPECIFICATION LEAD OR ITS LICENSORS BE LIABLE FOR ANY DAMAGES,
+INCLUDING WITHOUT LIMITATION, LOST REVENUE, PROFITS OR DATA, OR FOR SPECIAL, INDIRECT, CONSEQUENTIAL, INCIDENTAL OR
+PUNITIVE DAMAGES, HOWEVER CAUSED AND REGARDLESS OF THE THEORY OF LIABILITY, ARISING OUT OF OR RELATED IN ANY WAY TO
+YOUR HAVING, IMPELEMENTING OR OTHERWISE USING USING  THE SPECIFICATION, EVEN IF SPECIFICATION LEAD AND/OR ITS LICENSORS
+HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+You will indemnify, hold harmless, and defend Specification Lead and its licensors from any claims arising or resulting
+from: (i) your use of the Specification; (ii) the use or distribution of your Java application, applet and/or
+implementation; and/or (iii) any claims that later versions or releases of any Specification furnished to you are
+incompatible with the Specification provided to you under this license.</simpara>
+<simpara>RESTRICTED RIGHTS LEGEND</simpara>
+<simpara>U.S. Government: If this Specification is being acquired by or on behalf of the U.S. Government or by a U.S. Government
+prime contractor or subcontractor (at any tier), then the Government&#8217;s rights in the Software and accompanying
+documentation shall be only as set forth in this license; this is in accordance with 48 C.F.R. 227.7201 through
+227.7202-4 (for Department of Defense (DoD) acquisitions) and with 48 C.F.R. 2.101 and 12.212 (for non-DoD acquisitions).</simpara>
+<simpara>REPORT</simpara>
+<simpara>If you provide Specification Lead with any comments or suggestions concerning the Specification ("Feedback"), you
+hereby: (i) agree that such Feedback is provided on a non-proprietary and non-confidential basis, and (ii) grant
+Specification Lead a perpetual, non-exclusive, worldwide, fully paid-up, irrevocable license, with the right to
+sublicense through multiple levels of sublicensees, to incorporate, disclose, and use without limitation the Feedback
+for any purpose.</simpara>
+<simpara>GENERAL TERMS</simpara>
+<simpara>Any action related to this Agreement will be governed by California law and controlling U.S. federal law. The U.N.
+Convention for the International Sale of Goods and the choice of law rules of any jurisdiction will not apply.</simpara>
+<simpara>The Specification is subject to U.S. export control laws and may be subject to export or import regulations in other
+countries. Licensee agrees to comply strictly with all such laws and regulations and acknowledges that it has the
+responsibility to obtain such licenses to export, re-export or import as may be required after delivery to Licensee.</simpara>
+<simpara>This Agreement is the parties' entire agreement relating to its subject matter. It supersedes all prior or
+contemporaneous oral or written communications, proposals, conditions, representations and warranties and
+prevails over any conflicting or additional terms of any quote, order,  acknowledgment, or other communication
+between the parties relating to its subject matter during the term of this Agreement. No modification to this
+Agreement will be binding, unless in writing and signed by an authorized representative of each party.</simpara>
+<simpara>Rev. April, 2006</simpara>
+<simpara role="text-center"><emphasis role="strong">Apache License</emphasis><?asciidoc-br?>
+Version 2.0, January 2004<?asciidoc-br?>
+<link xl:href="http://www.apache.org/licenses/">http://www.apache.org/licenses/</link></simpara>
+<simpara>TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>Definitions.</simpara>
+<simpara>"License" shall mean the terms and conditions for use, reproduction,
+and distribution as defined by Sections 1 through 9 of this document.</simpara>
+<simpara>"Licensor" shall mean the copyright owner or entity authorized by the
+copyright owner that is granting the License.</simpara>
+<simpara>"Legal Entity" shall mean the union of the acting entity and all other
+entities that control, are controlled by, or are under common control
+with that entity. For the purposes of this definition, "control" means
+(i) the power, direct or indirect, to cause the direction or management
+of such entity, whether by contract or otherwise, or (ii) ownership of
+fifty percent (50 outstanding shares, or (iii) beneficial ownership of
+such entity.</simpara>
+<simpara>"You" (or "Your") shall mean an individual or Legal Entity
+exercising permissions granted by this License.</simpara>
+<simpara>"Source" form shall mean the preferred form for making modifications,
+including but not limited to software source code, documentation source,
+and configuration files.</simpara>
+<simpara>"Object" form shall mean any form resulting from mechanical
+transformation or translation of a Source form, including but not
+limited to compiled object code, generated documentation, and
+conversions to other media types.</simpara>
+<simpara>"Work" shall mean the work of authorship, whether in Source or Object
+form, made available under the License, as indicated by a copyright
+notice that is included in or attached to the work (an example is
+provided in the Appendix below).</simpara>
+<simpara>"Derivative Works" shall mean any work, whether in Source or Object
+form, that is based on (or derived from) the Work and for which the
+editorial revisions, annotations, elaborations, or other modifications
+represent, as a whole, an original work of authorship. For the purposes
+of this License, Derivative Works shall not include works that remain
+separable from, or merely link (or bind by name) to the interfaces of,
+the Work and Derivative Works thereof.</simpara>
+<simpara>"Contribution" shall mean any work of authorship, including the
+original version of the Work and any modifications or additions to that
+Work or Derivative Works thereof, that is intentionally submitted to
+Licensor for inclusion in the Work by the copyright owner or by an
+individual or Legal Entity authorized to submit on behalf of the
+copyright owner. For the purposes of this definition, "submitted"
+means any form of electronic, verbal, or written communication sent to
+the Licensor or its representatives, including but not limited to
+communication on electronic mailing lists, source code control systems,
+and issue tracking systems that are managed by, or on behalf of, the
+Licensor for the purpose of discussing and improving the Work, but
+excluding communication that is conspicuously marked or otherwise
+designated in writing by the copyright owner as "Not a Contribution."</simpara>
+<simpara>"Contributor" shall mean Licensor and any individual or Legal Entity
+on behalf of whom a Contribution has been received by Licensor and
+subsequently incorporated within the Work.</simpara>
+</listitem>
+<listitem>
+<simpara>Grant of Copyright License. Subject to the terms and conditions of
+this License, each Contributor hereby grants to You a perpetual,
+worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright
+license to reproduce, prepare Derivative Works of, publicly display,
+publicly perform, sublicense, and distribute the Work and such
+Derivative Works in Source or Object form.</simpara>
+</listitem>
+<listitem>
+<simpara>Grant of Patent License. Subject to the terms and conditions of this
+License, each Contributor hereby grants to You a perpetual, worldwide,
+non-exclusive, no-charge, royalty-free, irrevocable (except as stated in
+this section) patent license to make, have made, use, offer to sell,
+sell, import, and otherwise transfer the Work, where such license
+applies only to those patent claims licensable by such Contributor that
+are necessarily infringed by their Contribution(s) alone or by
+combination of their Contribution(s) with the Work to which such
+Contribution(s) was submitted. If You institute patent litigation
+against any entity (including a cross-claim or counterclaim in a
+lawsuit) alleging that the Work or a Contribution incorporated within
+the Work constitutes direct or contributory patent infringement, then
+any patent licenses granted to You under this License for that Work
+shall terminate as of the date such litigation is filed.</simpara>
+</listitem>
+<listitem>
+<simpara>Redistribution. You may reproduce and distribute copies of the Work
+or Derivative Works thereof in any medium, with or without
+modifications, and in Source or Object form, provided that You meet the
+following conditions:</simpara>
+<orderedlist numeration="loweralpha">
+<listitem>
+<simpara>You must give any other recipients of the Work or Derivative Works
+a copy of this License; and</simpara>
+</listitem>
+<listitem>
+<simpara>You must cause any modified files to carry prominent notices
+stating that You changed the files; and</simpara>
+</listitem>
+<listitem>
+<simpara>You must retain, in the Source form of any Derivative Works that
+You distribute, all copyright, patent, trademark, and attribution
+notices from the Source form of the Work, excluding those notices that
+do not pertain to any part of the Derivative Works; and</simpara>
+</listitem>
+<listitem>
+<simpara>If the Work includes a "NOTICE" text file as part of its
+distribution, then any Derivative Works that You distribute must include
+a readable copy of the attribution notices contained within such NOTICE
+file, excluding those notices that do not pertain to any part of the
+Derivative Works, in at least one of the following places: within a
+NOTICE text file distributed as part of the Derivative Works; within the
+Source form or documentation, if provided along with the Derivative
+Works; or, within a display generated by the Derivative Works, if and
+wherever such third-party notices normally appear. The contents of the
+NOTICE file are for informational purposes only and do not modify the
+License. You may add Your own attribution notices within Derivative
+Works that You distribute, alongside or as an addendum to the NOTICE
+text from the Work, provided that such additional attribution notices
+cannot be construed as modifying the License.</simpara>
+<simpara>You may add Your own copyright statement to Your modifications and may
+provide additional or different license terms and conditions for use,
+reproduction, or distribution of Your modifications, or for any such
+Derivative Works as a whole, provided Your use, reproduction, and
+distribution of the Work otherwise complies with the conditions stated
+in this License.</simpara>
+</listitem>
+</orderedlist>
+</listitem>
+<listitem>
+<simpara>Submission of Contributions. Unless You explicitly state otherwise,
+any Contribution intentionally submitted for inclusion in the Work by
+You to the Licensor shall be under the terms and conditions of this
+License, without any additional terms or conditions. Notwithstanding the
+above, nothing herein shall supersede or modify the terms of any
+separate license agreement you may have executed with Licensor regarding
+such Contributions.</simpara>
+</listitem>
+<listitem>
+<simpara>Trademarks. This License does not grant permission to use the trade
+names, trademarks, service marks, or product names of the Licensor,
+except as required for reasonable and customary use in describing the
+origin of the Work and reproducing the content of the NOTICE file.</simpara>
+</listitem>
+<listitem>
+<simpara>Disclaimer of Warranty. Unless required by applicable law or agreed
+to in writing, Licensor provides the Work (and each Contributor provides
+its Contributions) on an "AS IS" BASIS, WITHOUT WARRANTIES OR
+CONDITIONS OF ANY KIND, either express or implied, including, without
+limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT,
+MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely
+responsible for determining the appropriateness of using or
+redistributing the Work and assume any risks associated with Your
+exercise of permissions under this License.</simpara>
+</listitem>
+<listitem>
+<simpara>Limitation of Liability. In no event and under no legal theory,
+whether in tort (including negligence), contract, or otherwise, unless
+required by applicable law (such as deliberate and grossly negligent
+acts) or agreed to in writing, shall any Contributor be liable to You
+for damages, including any direct, indirect, special, incidental, or
+consequential damages of any character arising as a result of this
+License or out of the use or inability to use the Work (including but
+not limited to damages for loss of goodwill, work stoppage, computer
+failure or malfunction, or any and all other commercial damages or
+losses), even if such Contributor has been advised of the possibility of
+such damages.</simpara>
+</listitem>
+<listitem>
+<simpara>Accepting Warranty or Additional Liability. While redistributing the
+Work or Derivative Works thereof, You may choose to offer, and charge a
+fee for, acceptance of support, warranty, indemnity, or other liability
+obligations and/or rights consistent with this License. However, in
+accepting such obligations, You may act only on Your own behalf and on
+Your sole responsibility, not on behalf of any other Contributor, and
+only if You agree to indemnify, defend, and hold each Contributor
+harmless for any liability incurred by, or claims asserted against, such
+Contributor by reason of your accepting any such warranty or additional
+liability.</simpara>
+</listitem>
+</orderedlist>
+</colophon>
+<section xml:id="introduction">
+<title>Introduction</title>
+<simpara>Model-View-Controller, or <emphasis>MVC</emphasis> for short, is a common pattern in Web frameworks where it is used predominantly to build HTML applications.
+The <emphasis>model</emphasis> refers to the application’s data, the <emphasis>view</emphasis> to the application’s data presentation and the <emphasis>controller</emphasis> to the part of the
+system responsible for managing input, updating models and producing output.</simpara>
+<simpara>Web UI frameworks can be categorized as <emphasis>action-based</emphasis> or <emphasis>component-based</emphasis>. In an action-based framework, HTTP requests are
+routed to controllers where they are turned into actions by application code; in a component-based framework, HTTP requests are grouped and
+typically handled by framework components with little or no interaction from application code. In other words, in a component-based framework,
+the majority of the controller logic is provided by the framework instead of the application.</simpara>
+<simpara>The API defined by this specification falls into the action-based category and is, therefore, not intended to be a replacement for
+component-based frameworks such as JavaServer Faces (JSF) [<link linkend="jsf22">1</link>], but simply a different approach to building Web applications on the Java EE platform.</simpara>
+<section xml:id="goals">
+<title>Goals</title>
+<simpara>The following are goals of the API:</simpara>
+<informaltable tabstyle="horizontal" frame="none" colsep="0" rowsep="0">
+<tgroup cols="2">
+<colspec colwidth="15*"/>
+<colspec colwidth="85*"/>
+<tbody valign="top">
+<row>
+<entry>
+<simpara>Goal 1</simpara>
+</entry>
+<entry>
+<simpara>Leverage existing Java EE technologies like CDI [<link linkend="cdi11">2</link>] and Bean Validation [<link linkend="bv11">3</link>].</simpara>
+</entry>
+</row>
+<row>
+<entry>
+<simpara>Goal 2</simpara>
+</entry>
+<entry>
+<simpara>Define a solid core to build MVC applications without necessarily supporting all the features in its first version.</simpara>
+</entry>
+</row>
+<row>
+<entry>
+<simpara>Goal 3</simpara>
+</entry>
+<entry>
+<simpara>Build on top of JAX-RS for the purpose of re-using its matching and binding layers.</simpara>
+</entry>
+</row>
+<row>
+<entry>
+<simpara>Goal 4</simpara>
+</entry>
+<entry>
+<simpara>Provide built-in support for JSPs and Facelets view languages.</simpara>
+</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</section>
+<section xml:id="non_goals">
+<title>Non-Goals</title>
+<simpara>The following are non-goals of the API:</simpara>
+<informaltable tabstyle="horizontal" frame="none" colsep="0" rowsep="0">
+<tgroup cols="2">
+<colspec colwidth="15*"/>
+<colspec colwidth="85*"/>
+<tbody valign="top">
+<row>
+<entry>
+<simpara>Non-Goal 1</simpara>
+</entry>
+<entry>
+<simpara>Define a new view (template) language and processor.</simpara>
+</entry>
+</row>
+<row>
+<entry>
+<simpara>Non-Goal 2</simpara>
+</entry>
+<entry>
+<simpara>Support standalone implementations of MVC running outside of Java EE.</simpara>
+</entry>
+</row>
+<row>
+<entry>
+<simpara>Non-Goal 3</simpara>
+</entry>
+<entry>
+<simpara>Support REST services not based on JAX-RS.</simpara>
+</entry>
+</row>
+<row>
+<entry>
+<simpara>Non-Goal 4</simpara>
+</entry>
+<entry>
+<simpara>Provide built-in support for view languages that are not part of Java EE.</simpara>
+</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+<simpara>It is worth noting that, even though a standalone implementation of MVC that runs outside of Java EE is a non-goal,
+this specification shall not intentionally prevent implementations to run in other environments,
+provided that those environments include support for all the EE technologies required by MVC.</simpara>
+</section>
+<section xml:id="additional_information">
+<title>Additional Information</title>
+<simpara>The issue tracking system for this specification can be found at:</simpara>
+<simpara><link xl:href="https://github.com/mvc-spec/mvc-spec/issues">https://github.com/mvc-spec/mvc-spec/issues</link></simpara>
+<simpara>The corresponding Javadocs can be found online at:</simpara>
+<simpara><link xl:href="https://www.mvc-spec.org/spec/">https://www.mvc-spec.org/spec/</link></simpara>
+<simpara>The reference implementation can be obtained from:</simpara>
+<simpara><link xl:href="https://www.mvc-spec.org/ozark/">https://www.mvc-spec.org/ozark/</link></simpara>
+<simpara>The expert group seeks feedback from the community on any aspect of this specification, please send comments to:</simpara>
+<simpara><link xl:href="mailto:jsr371-users@googlegroups.com">jsr371-users@googlegroups.com</link></simpara>
+</section>
+<section xml:id="terminology">
+<title>Terminology</title>
+<simpara>Most of the terminology used in this specification is borrowed from other specifications such as JAX-RS and CDI. We use the terms <emphasis>per-request</emphasis>
+and <emphasis>request-scoped</emphasis> as well as <emphasis>per-application</emphasis> and <emphasis>application-scoped</emphasis> interchangeably.</simpara>
+</section>
+<section xml:id="conventions">
+<title>Conventions</title>
+<simpara>The keywords `MUST', `MUST NOT', `REQUIRED', `SHALL', `SHALL NOT', `SHOULD', `SHOULD NOT', `RECOMMENDED', `MAY', and `OPTIONAL'
+in this document are to be interpreted as described in RFC 2119 [<link linkend="rfc2119">4</link>].</simpara>
+<simpara>Java code and sample data fragments are formatted as shown below:</simpara>
+<programlisting language="java" linenumbering="numbered">package com.example.hello;
+
+public class Hello {
+    public static void main(String args[]){
+        System.out.println("Hello World");
+    }
+}</programlisting>
+<simpara>URIs of the general form <link xl:href="http://example.org/">http://example.org/&#8230;&#8203;</link> and <link xl:href="http://example.com/">http://example.com/&#8230;&#8203;</link> represent application or context-dependent URIs.</simpara>
+<simpara>All parts of this specification are normative, with the exception of examples, notes and sections explicitly marked as `Non-Normative'.
+Non-normative notes are formatted as shown below.</simpara>
+<note>
+<title>Note</title>
+<simpara>This is a note.</simpara>
+</note>
+</section>
+<section xml:id="spec_leads">
+<title>Specification Leads</title>
+<simpara>The following table lists the current and former specification leads:</simpara>
+<informaltable frame="all" rowsep="1" colsep="1">
+<tgroup cols="2">
+<colspec colname="col_1" colwidth="50*"/>
+<colspec colname="col_2" colwidth="50*"/>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara>Ivar Grimstad (Individual Member)</simpara></entry>
+<entry align="left" valign="top"><simpara>(Jan 2017 - present)</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Christian Kaltepoth (ingenit GmbH &amp; Co. KG)</simpara></entry>
+<entry align="left" valign="top"><simpara>(May 2017 - present)</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Santiago Pericas-Geertsen (Oracle)</simpara></entry>
+<entry align="left" valign="top"><simpara>(Aug 2014 - Jan 2017)</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Manfred Riem (Oracle)</simpara></entry>
+<entry align="left" valign="top"><simpara>(Aug 2014 - Jan 2017)</simpara></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</section>
+<section xml:id="expert_group">
+<title>Expert Group Members</title>
+<simpara>This specification is being developed as part of <link xl:href="https://jcp.org/en/jsr/detail?id=371">JSR 371</link> under the Java Community Process. The following are the present expert group members:</simpara>
+<informaltable frame="all" rowsep="1" colsep="1">
+<tgroup cols="2">
+<colspec colname="col_1" colwidth="50*"/>
+<colspec colname="col_2" colwidth="50*"/>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara>Ivar Grimstad (Individual Member)</simpara></entry>
+<entry align="left" valign="top"><simpara>Neil Griffin (Liferay, Inc)</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Joshua Wilson (RedHat)</simpara></entry>
+<entry align="left" valign="top"><simpara>Rodrigo Turini (Caelum)</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Stefan Tilkov (innoQ Deutschland GmbH)</simpara></entry>
+<entry align="left" valign="top"><simpara>Frank Caputo (Individual Member)</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Christian Kaltepoth (ingenit GmbH &amp; Co. KG)</simpara></entry>
+<entry align="left" valign="top"><simpara>Woong-ki Lee (TmaxSoft, Inc.)</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Paul Nicolucci (IBM)</simpara></entry>
+<entry align="left" valign="top"><simpara>Rahman Usta (Individual Member)</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Florian Hirsch (adorsys GmbH &amp; Co KG)</simpara></entry>
+<entry align="left" valign="top"><simpara>Santiago Pericas-Geertsen (Oracle)</simpara></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+<simpara>The following are former members of the expert group:</simpara>
+<informaltable frame="all" rowsep="1" colsep="1">
+<tgroup cols="2">
+<colspec colname="col_1" colwidth="50*"/>
+<colspec colname="col_2" colwidth="50*"/>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara>Guilherme de Azevedo Silveira (Individual Member)</simpara></entry>
+<entry align="left" valign="top"><simpara>Kito D. Mann (Individual Member)</simpara></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</section>
+<section xml:id="contributors">
+<title>Contributors</title>
+<simpara>The following are the contributors of the specification:</simpara>
+<informaltable frame="all" rowsep="1" colsep="1">
+<tgroup cols="2">
+<colspec colname="col_1" colwidth="50*"/>
+<colspec colname="col_2" colwidth="50*"/>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara>Daniel Dias dos Santos</simpara></entry>
+<entry align="left" valign="top"><simpara>Phillip Krüger</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara>Andreas Badelt</simpara></entry>
+<entry align="left" valign="top"></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</section>
+<section xml:id="acks">
+<title>Acknowledgements</title>
+<simpara>During the course of this JSR we received many excellent suggestions. Special thanks to Marek Potociar, Dhiru Pandey and Ed Burns, all from Oracle.
+In addition, to everyone in the user’s alias that followed the expert discussions and provided feedback, including Peter Pilgrim, Ivar Grimstad, Jozef Hartinger, Florian Hirsch, Frans Tamura, Rahman Usta, Romain Manni-Bucau, Alberto Souza, among many others.</simpara>
+</section>
+</section>
+<section xml:id="mvc">
+<title>Models, Views and Controllers</title>
+<simpara>This chapter introduces the three components that comprise the
+ architectural pattern: models, views and controllers.</simpara>
+<section xml:id="controllers">
+<title>Controllers</title>
+<simpara><phrase role="tck-testable tck-id-ctrl-method">An <emphasis>MVC controller</emphasis> is a JAX-RS [<link linkend="jaxrs20">5</link>] resource method decorated by <literal>@Controller</literal></phrase>.
+<phrase role="tck-testable tck-id-ctrl-class">If this annotation is applied to a class, then all resource methods in it are regarded as controllers</phrase>.
+<phrase role="tck-testable tck-id-ctrl-hybrid">Using the <literal>@Controller</literal> annotation on a subset of methods defines a hybrid class in which certain methods are controllers and others are traditional JAX-RS resource methods.</phrase></simpara>
+<simpara>A simple hello-world controller can be defined as follows:</simpara>
+<programlisting language="java" linenumbering="numbered">@Path("hello")
+public class HelloController {
+
+    @GET
+    @Controller
+    public String hello(){
+        return "hello.jsp";
+    }
+}</programlisting>
+<simpara>In this example, <literal>hello</literal> is a controller method that returns a path to a JavaServer Page (JSP).
+The semantics of controller methods differ slightly from JAX-RS resource methods;
+<phrase role="tck-testable tck-id-return-string">in particular, a return type of <literal>String</literal> is interpreted as a view path rather than text content</phrase>.
+<phrase role="tck-testable tck-id-default-mediatype">Moreover, the default media type for a response is assumed to be <literal>text/html</literal>, but otherwise can be declared using <literal>@Produces</literal> just like in JAX-RS</phrase>.</simpara>
+<simpara>A controller’s method return type determines how its result is processed:</simpara>
+<variablelist>
+<varlistentry>
+<term>void</term>
+<listitem>
+<simpara><phrase role="tck-testable tck-id-return-void">A controller method that returns void is REQUIRED to be decorated by <literal>@View</literal></phrase>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>String</term>
+<listitem>
+<simpara><phrase role="tck-testable tck-id-return-string2">A string returned is interpreted as a view path</phrase>.</simpara>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Response</term>
+<listitem>
+<simpara><phrase role="tck-testable tck-id-return-response">A JAX-RS <literal>Response</literal> whose entity’s type is one of the above</phrase>.</simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<simpara>The following class defines equivalent controller methods:</simpara>
+<programlisting language="java" linenumbering="numbered">@Controller
+@Path("hello")
+public class HelloController {
+
+    @GET @Path("void")
+    @View("hello.jsp")
+    public void helloVoid() {
+    }
+
+    @GET @Path("string")
+    public String helloString() {
+        return "hello.jsp";
+    }
+
+    @GET @Path("response")
+    public Response helloResponse() {
+        return Response.status(Response.Status.OK)
+            .entity("hello.jsp")
+            .build();
+    }
+}</programlisting>
+<simpara>Controller methods that return a non-void type may also be decorated with <literal>@View</literal> as a way to specify a <emphasis>default</emphasis> view for the controller.
+<phrase role="tck-testable tck-id-non-null-viewable">The default view MUST be used only when such a non-void controller method returns a <literal>null</literal> value</phrase>.</simpara>
+<simpara>Note that, even though controller methods return types are restricted as explained above, MVC does not impose any restrictions on parameter types available to controller methods:
+i.e.,
+<phrase role="tck-testable tck-id-inject-param-types">all parameter types injectable in JAX-RS resources are also available in controllers</phrase>.
+<phrase role="tck-testable tck-id-inject-field-props">Likewise, injection of fields and properties is unrestricted and fully compatible with JAX-RS</phrase>.
+Note the restrictions explained in Section <xref linkend="controller_instances"/>.</simpara>
+<simpara>Controller methods handle a HTTP request directly. Sub-resource locators as described in the JAX-RS Specification [<link linkend="jaxrs20">5</link>] are not supported by MVC.</simpara>
+<section xml:id="controller_instances">
+<title>Controller Instances</title>
+<simpara>Unlike in JAX-RS where resource classes can be native (created and managed by JAX-RS), CDI beans, managed beans or EJBs,
+<phrase role="tck-testable tck-id-ctrl-cdi">MVC classes are REQUIRED to be CDI-managed beans only</phrase>.
+<phrase role="tck-testable tck-id-ctrl-cdi-hybrid">It follows that a hybrid class that contains a mix of JAX-RS resource methods and MVC controllers must also be CDI managed</phrase>.</simpara>
+<simpara><phrase role="tck-testable tck-id-request-scope-default">Like in JAX-RS, the default resource class instance lifecycle is <emphasis>per-request</emphasis></phrase>.
+Implementations MAY support other lifecycles via CDI; the same caveats that apply to JAX-RS classes in other lifecycles applied to MVC classes.
+<phrase role="tck-testable tck-id-scope-proxy">In particular, CDI may need to create proxies when, for example, a per-request instance is as a member of a per-application instance</phrase>.
+See [<link linkend="jaxrs20">5</link>] for more information on lifecycles and their caveats.</simpara>
+</section>
+<section xml:id="response">
+<title>Response</title>
+<simpara><phrase role="tck-testable tck-id-response-header">Returning a <literal>Response</literal> object gives applications full access to all the parts in a response, including the headers</phrase>.
+For example, an instance of <literal>Response</literal> can modify the HTTP status code upon encountering an error condition;
+JAX-RS provides a fluent API to build responses as shown next.</simpara>
+<programlisting language="java" linenumbering="numbered">@GET
+@Controller
+public Response getById(@PathParam("id") String id) {
+    if (id.length() == 0) {
+        return Response.status(Response.Status.BAD_REQUEST)
+            .entity("error.jsp")
+            .build();
+    }
+    //...
+}</programlisting>
+<simpara>Direct access to <literal>Response</literal> enables applications to override content types, set character encodings, set cache control policies, trigger an HTTP redirect, etc.
+For more information, the reader is referred to the Javadoc for the <literal>Response</literal> class.</simpara>
+</section>
+<section xml:id="redirect">
+<title>Redirect and @RedirectScoped</title>
+<simpara>As stated in the previous section, <phrase role="tck-testable tck-id-redirect-response">controllers can redirect clients by returning a <literal>Response</literal> instance using the JAX-RS API</phrase>.
+For example,</simpara>
+<programlisting language="java" linenumbering="numbered">@GET
+@Controller
+public Response redirect() {
+    return Response.seeOther(URI.create("see/here")).build();
+}</programlisting>
+<simpara>Given the popularity of the POST-redirect-GET pattern,
+<phrase role="tck-testable tck-id-redirect-prefix">MVC implementations are REQUIRED to support view paths prefixed by <literal>redirect:</literal> as a more concise way to trigger a client redirect</phrase>.
+Using this prefix, the controller shown above can be re-written as follows:</simpara>
+<programlisting language="java" linenumbering="numbered">@GET
+@Controller
+public String redirect() {
+    return "redirect:see/here";
+}</programlisting>
+<simpara><phrase role="tck-testable tck-id-redirect-relative">In either case, relative paths are resolved relative to the JAX-RS application path</phrase> - for more information please refer to the Javadoc for the <literal>seeOther</literal> method.
+It is worth noting that redirects require client cooperation (all browsers support it, but certain CLI clients may not) and result in a completely new request-response cycle in order to access the intended controller.
+If a controller returns a <literal>redirect:</literal> view path, <phrase role="tck-testable tck-id-redirect-303-302">MVC implementations SHOULD use the 303 (See other) status code for the redirect, but MAY prefer 302 (Found) if HTTP 1.0 compatibility is required.</phrase></simpara>
+<simpara>MVC applications can leverage CDI by defining beans in scopes such as request and session.
+<phrase role="tck-testable tck-id-scope-request">A bean in request scope is available only during the processing of a single request</phrase>,
+<phrase role="tck-testable tck-id-scope-session">while a bean in session scope is available throughout an entire web session which can potentially span tens or even hundreds of requests</phrase>.</simpara>
+<simpara>Sometimes it is necessary to share data between the request that returns a redirect instruction and the new request that is triggered as a result.
+That is, a scope that spans at most two requests and thus fits between a request and a session scope.
+For this purpose, the MVC API defines a new CDI scope identified by the annotation <literal>@RedirectScoped</literal>.
+<phrase role="tck-testable tck-id-scope-redirect">CDI beans in this scope are automatically created and destroyed by correlating a redirect and the request that follows</phrase>.
+The exact mechanism by which requests are correlated is implementation dependent, but popular techniques include URL rewrites and cookies.</simpara>
+<simpara>Let us assume that <literal>MyBean</literal> is annotated by <literal>@RedirectScoped</literal> and given the name <literal>mybean</literal>, and consider the following controller:</simpara>
+<programlisting language="java" linenumbering="numbered">@Controller
+@Path("submit")
+public class MyController {
+
+    @Inject
+    private MyBean myBean;
+
+    @POST
+    public String post() {
+        myBean.setValue("Redirect about to happen");
+        return "redirect:/submit";
+    }
+
+    @GET
+    public String get() {
+        return "mybean.jsp"; // mybean.value accessed in JSP
+    }
+}</programlisting>
+<simpara>The bean <literal>myBean</literal> is injected in the controller and available not only during the first <literal>POST</literal>, but also during the subsequent <literal>GET</literal> request,
+enabling <emphasis>communication</emphasis> between the two interactions; the creation and destruction of the bean is under control of CDI,
+and thus completely transparent to the application just like any other built-in scope.</simpara>
+</section>
+</section>
+<section xml:id="models">
+<title>Models</title>
+<simpara>MVC controllers are responsible for combining data models and views (templates) to produce web application pages.
+This specification supports two kinds of models: the first is based on CDI <literal>@Named</literal> beans,
+and the second on the <literal>Models</literal> interface which defines a map between names and objects.
+<phrase role="tck-testable tck-id-builtin-both-models">MVC provides view engines for JSP and Facelets out of the box, which support both types</phrase>.
+For all other view engines supporting the <literal>Models</literal> interface is mandatory,
+support for CDI <literal>@Named</literal> beans is OPTIONAL but highly RECOMMENDED.</simpara>
+<simpara>Let us now revisit our hello-world example, this time also showing how to update a model. Since we intend to show the two ways in which models
+can be used, we define the model as a CDI <literal>@Named</literal> bean in request scope even though this is only necessary for the CDI case:</simpara>
+<programlisting language="java" linenumbering="numbered">@Named("greeting")
+@RequestScoped
+public class Greeting {
+
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+    //...
+}</programlisting>
+<simpara><phrase role="tck-testable tck-id-cdi-model-inject">Given that the view engine for JSPs supports <literal>@Named</literal> beans, all the controller needs to do is fill out the model and return the view</phrase>.
+Access to the model is straightforward using CDI injection:</simpara>
+<programlisting language="java" linenumbering="numbered">@Path("hello")
+public class HelloController {
+
+    @Inject
+    private Greeting greeting;
+
+    @GET
+    @Controller
+    public String hello() {
+        greeting.setMessage("Hello there!");
+        return "hello.jsp";
+    }
+}</programlisting>
+<simpara><phrase role="tck-testable tck-id-cdi-model-el">This will allow the view to access the greeting using the EL expression</phrase> <literal>${hello.greeting}</literal>.</simpara>
+<simpara>Instead of using CDI beans annotated with <literal>@Named</literal>, <phrase role="tck-testable tck-id-models-inject">controllers can also use the <literal>Models</literal> map to pass data to the view</phrase>:</simpara>
+<programlisting language="java" linenumbering="numbered">@Path("hello")
+public class HelloController {
+
+    @Inject
+    private Models models;
+
+    @GET
+    @Controller
+    public String hello() {
+        models.put("greeting", new Greeting("Hello there!"));
+        return "hello.jsp";
+    }
+}</programlisting>
+<simpara>In this example, the model is given the same name as that in the <literal>@Named</literal> annotation above, but using the injectable <literal>Models</literal> map instead.</simpara>
+<simpara>For more information about view engines see the <xref linkend="view_engines"/> section.</simpara>
+</section>
+<section xml:id="views">
+<title>Views</title>
+<simpara>A <emphasis>view</emphasis>, sometimes also referred to as a template, defines the structure of the output page and can refer to one or more models.
+It is the responsibility of a <emphasis>view engine</emphasis> to process (render) a view by extracting the information in the models and producing the output page.</simpara>
+<simpara>Here is the JSP page for the hello-world example:</simpara>
+<programlisting language="html" linenumbering="numbered">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Hello&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;${greeting.message}&lt;/h1&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</programlisting>
+<simpara><phrase role="tck-testable tck-id-jsp-el">In a JSP, model properties are accessible via EL</phrase> [<link linkend="el30">6</link>]. In the example above, the property <literal>message</literal> is read from the <literal>greeting</literal> model
+whose name was either specified in a <literal>@Named</literal> annotation or used as a key in the <literal>Models</literal> map, depending on which controller from the <xref linkend="models"/> section triggered this view&#8217;s processing.</simpara>
+<simpara>Here is the corresponding example using Facelets instead of JSP:</simpara>
+<programlisting language="html" linenumbering="numbered">&lt;!DOCTYPE html&gt;
+&lt;html lang="en" xmlns:h="http://xmlns.jcp.org/jsf/html"&gt;
+    &lt;h:head&gt;
+        &lt;title&gt;Hello&lt;/title&gt;
+    &lt;/h:head&gt;
+    &lt;h:body&gt;
+        &lt;h:outputText value="#{greeting.message}" /&gt;
+    &lt;/h:body&gt;
+&lt;/html&gt;</programlisting>
+<section xml:id="mvc_uri">
+<title>Building URIs in a View</title>
+<simpara>A typical application requires to build URIs for the view, which often refer to controller methods within the same application.
+Typical examples for such URIs include HTML links and form actions.
+As building URIs manually is difficult and duplicating path patterns between the controller class and the view is error prone,
+MVC provides a simple way to generate URIs using the <literal>MvcContext</literal> class.</simpara>
+<simpara>See the following controller as an example:</simpara>
+<programlisting language="java" linenumbering="numbered">@Controller
+@Path("books")
+public class BookController {
+
+    @GET
+    public String list() {
+      // ...
+    }
+
+    @GET
+    @Path("{id}")
+    public String detail( @PathParam("id") long id ) {
+      // ...
+    }
+
+}</programlisting>
+<simpara>Assuming the application is deployed with the context path <literal>/myapp</literal> and is using the application path <literal>/mvc</literal>,
+<phrase role="tck-testable tck-id-el-access">URIs for these controller methods can be created with an EL expression</phrase> like this:</simpara>
+<programlisting language="html" linenumbering="unnumbered">&lt;!-- /myapp/mvc/books --&gt;
+${mvc.uri('BookController#list')}
+
+&lt;!-- /myapp/mvc/books/1234 --&gt;
+${mvc.uri('BookController#detail', { 'isbn': 1234 })}</programlisting>
+<simpara><phrase role="tck-testable tck-id-class-method-name">The controller method is referenced using the simple name of the controller class and the corresponding method name separated by <literal>#</literal></phrase>.
+<phrase role="tck-testable tck-id-param-map">If the URI contains path, query or matrix parameters, concrete values can be supplied using a map</phrase>.
+Please note that the keys of this map must match the parameter name used in the <literal>@PathParam</literal>, <literal>@QueryParam</literal> or <literal>@MatrixParam</literal> annotation.
+<phrase role="tck-testable tck-id-uri-encoding">MVC implementations MUST apply the corresponding URI encoding rules depending on whether the value is used in a query, path or matrix parameter</phrase>.</simpara>
+<simpara>The syntax used above to reference the controller method works well in most cases.
+However, because of the simple nature of this reference style, it will require controller class names to be unique.
+Also, the references may break if the controller class or method name changes as part of a refactoring.</simpara>
+<simpara><phrase role="tck-testable tck-id-uri-ref">Therefore, applications can use the <literal>@UriRef</literal> annotation to define a stable and unique name for a controller method</phrase>.</simpara>
+<programlisting language="java" linenumbering="numbered">@Controller
+@Path("books")
+public class BookController {
+
+    @GET
+    @UriRef("book-list")
+    public String list() {
+      // ...
+    }
+
+    // ...
+
+}</programlisting>
+<simpara>Given such a controller class, the view can generate a matching URI by referencing the controller method using this reference.</simpara>
+<programlisting language="html" linenumbering="unnumbered">&lt;!-- /myapp/mvc/books --&gt;
+${mvc.uri('book-list')}</programlisting>
+<simpara>Please note that this feature will work with JSP, Facelets and all view engines which support invoking methods on CDI model objects.</simpara>
+</section>
+</section>
+</section>
+<section xml:id="data_binding">
+<title>Data Binding</title>
+<simpara>This chapter discusses data binding in the MVC API.
+Data binding is based on the underlying mechanism provided by JAX-RS,
+but with additional support for i18n requirements and for handling data binding errors within the controller.</simpara>
+<section xml:id="data_binding_intro">
+<title>Introduction</title>
+<simpara>JAX-RS provides support for binding request parameters (like form/query parameters) to resource fields or resource method parameters.
+Starting with JAX-RS 2.0, developers can also specify validation constraints using Bean Validation annotations.
+In this case submitted values are automatically validated against the given constraints and rejected if validation fails.</simpara>
+<simpara>Let&#8217;s have a look at the following resource for an example:</simpara>
+<programlisting language="java" linenumbering="numbered">@Path("form")
+public class FormResource {
+
+    @FormParam("age")
+    @Min(18)
+    private int age;
+
+    @POST
+    public Response handlePost() {
+        // ...
+    }
+}</programlisting>
+<simpara>This resource uses a <literal>@FormParam</literal> annotation to bind the value of the <literal>age</literal> form parameter to a resource field.
+It also uses the Bean Validation annotation <literal>@Min</literal> to specify a constraint on the value.</simpara>
+<simpara>When JAX-RS binds the submitted data to the field, two types of errors are possible:</simpara>
+<informaltable tabstyle="horizontal" frame="none" colsep="0" rowsep="0">
+<tgroup cols="2">
+<colspec colwidth="15*"/>
+<colspec colwidth="85*"/>
+<tbody valign="top">
+<row>
+<entry>
+<simpara>Binding Error</simpara>
+</entry>
+<entry>
+<simpara>This type occurs if JAX-RS is unable to convert the submitted value into the desired target Java type.
+For the resource shown above, such an error will be thrown if the user submits some arbitrary string like <literal>foobar</literal> which cannot be converted into an integer.</simpara>
+</entry>
+</row>
+<row>
+<entry>
+<simpara>Validation Error</simpara>
+</entry>
+<entry>
+<simpara>If the submitted value can be converted into the target type, JAX-RS will validate the data according to the Bean Validation constraints.
+In our example submitting the value 16 would be considered invalid and therefore result in a constraint violation.</simpara>
+</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+<simpara>Unfortunately the JAX-RS data binding mechanism doesn&#8217;t work well for web applications:</simpara>
+<itemizedlist>
+<listitem>
+<simpara>Both binding and validation errors will cause JAX-RS to throw an exception which can only be handled by an <literal>ExceptionMapper</literal>.
+Especially JAX-RS won&#8217;t execute the resource method if errors were detected.
+This is problematic, because typically web applications will want to display the submitted form again and include a message explaining why the submission failed.
+Implementing such a requirement using an <literal>ExceptionMapper</literal> is not feasible.</simpara>
+</listitem>
+<listitem>
+<simpara>The JAX-RS data binding is not locale-aware.
+This is a problem especially for numeric data types containing fraction digits (like <literal>double</literal>, <literal>float</literal>, <literal>BigDecimal</literal>, etc).
+By default, JAX-RS will always assume the US number format.</simpara>
+</listitem>
+</itemizedlist>
+</section>
+<section xml:id="mvc_binding_annotation">
+<title>@MvcBinding annotation</title>
+<simpara>MVC addresses the shortcomings of the standard JAX-RS data binding by providing a special data binding mode optimized for web applications.
+<phrase role="tck-testable tck-id-mvc-binding">You can enable the MVC specific data binding by adding a <literal>@MvcBinding</literal> annotation to the corresponding controller field or method parameter</phrase>.</simpara>
+<simpara>The following example shows a controller which uses a MVC binding on a controller field.</simpara>
+<programlisting language="java" linenumbering="numbered">@Controller
+@Path("form")
+public class FormController {
+
+    @MvcBinding
+    @FormParam("age")
+    @Min(18)
+    private int age;
+
+    @POST
+    public String processForm() {
+        // ...
+    }
+}</programlisting>
+<simpara>Please note that usually <literal>@MvcBinding</literal> will be used with <literal>@FormParam</literal> and <literal>@QueryParam</literal> bindings, as they are very common in web application.
+However, depending on the specific use case, it may also be useful to use it with other parameter binding types.
+<phrase role="tck-testable tck-id-all-binding-annotations">Therefore, MVC implementations MUST support <literal>@MvcBinding</literal> with all JAX-RS binding annotations</phrase>.</simpara>
+<simpara>The following sections will describe the differences from traditional JAX-RS data binding in detail.</simpara>
+</section>
+<section xml:id="error_handling_bindingresult">
+<title>Error handling with BindingResult</title>
+<simpara>As mentioned in the first section, JAX-RS data binding aborts request processing for any binding or validation error.
+This means, that a resource method will only be invoked if all bindings were successful.</simpara>
+<simpara>MVC bindings handle such errors in a different way.
+<phrase role="tck-testable tck-id-invoke-controller">An MVC implementation is required to invoke the matched controller method even if binding or validation errors occurred</phrase>.
+<phrase role="tck-testable tck-id-inject-binding-result">Controllers can inject a request-scoped instance of <literal>BindingResult</literal> to access details about potential data binding errors</phrase>.
+This allows controllers to handle such errors themselves, which typically means that human-readable error messages are presented to the user when the next view is rendered.</simpara>
+<simpara>The following example shows a controller which uses <literal>BindingResult</literal> to handle data binding errors:</simpara>
+<programlisting language="java" linenumbering="numbered">@Controller
+@Path("form")
+public class FormController {
+
+    @MvcBinding
+    @FormParam("age")
+    @Min(18)
+    private int age;
+
+    @Inject
+    private BindingResult bindingResult;
+
+    @Inject
+    private Models models;
+
+    @POST
+    public String processForm() {
+
+        if( bindingResult.isFailed() ) {
+            models.put( "errors", bindingResult.getAllMessages() );
+            return "form.jsp";
+        }
+
+        // process the form request
+
+    }
+}</programlisting>
+<simpara>Please note that it is very important for a controller to actually check the <literal>BindingResult</literal> for errors if it uses MVC bindings.
+If a binding failed and the controller processes the value without checking for errors, the bound value may be empty or contain an invalid value.</simpara>
+<simpara>MVC implementations SHOULD log a warning if a request created data binding errors but the controller didn&#8217;t invoke any method on <literal>BindingResult</literal>.</simpara>
+</section>
+<section xml:id="converting_parameters">
+<title>Converting to Java types</title>
+<simpara>The standard JAX-RS data binding doesn&#8217;t work very well for web application,
+because it isn&#8217;t locale-aware and some standard HTML form elements submit data which cannot easily be bound to matching Java types
+(e.g. checkboxes are submitting <literal>on</literal> if checked and JAX-RS is expecting <literal>true</literal> for boolean values).</simpara>
+<simpara>MVC implementations are required to apply the following data conversion rules if a binding is annotated with <literal>@MvcBinding</literal>.</simpara>
+<section xml:id="numeric_types">
+<title>Numeric types</title>
+<simpara>Implementations MUST support <literal>int</literal>, <literal>long</literal>, <literal>float</literal>, <literal>double</literal>, <literal>BigDecimal</literal>, <literal>BigInteger</literal> and corresponding wrapper types for MVC bindings.
+Support for other numeric types is optional.
+<phrase role="tck-testable tck-id-convert-numeric">When converting values to these numeric Java types, MVC implementations MUST use the current <emphasis>request locale</emphasis> for parsing non-empty strings</phrase>.
+Typically, an implementation will use a <literal>NumberFormat</literal> instance initialized with the corresponding locale for converting the data.
+<phrase role="tck-testable tck-id-convert-empty-numeric">Empty strings are either converted to <literal>null</literal> or to the default value of the corresponding primitive data type</phrase>.
+Please refer to the <xref linkend="i18n"/> section for details about the MVC request locale.</simpara>
+</section>
+<section xml:id="boolean_type">
+<title>Boolean type</title>
+<simpara><phrase role="tck-testable tck-id-convert-boolean">When an MVC implementation converts a non-empty string to a <literal>boolean</literal> primitive type or the <literal>java.lang.Boolean</literal> wrapper type, it MUST convert both <literal>true</literal> and <literal>on</literal> to the boolean <literal>true</literal> and all others strings to <literal>false</literal></phrase>.
+<phrase role="tck-testable tck-id-convert-empty-boolean">Empty strings are converted to <literal>false</literal> in case of the primitive <literal>boolean</literal> type and to <literal>null</literal> for the wrapper type</phrase>.</simpara>
+</section>
+<section xml:id="other_types">
+<title>Other types</title>
+<simpara>The conversion rules for all other Java types are implementation-specific.</simpara>
+</section>
+</section>
+</section>
+<section xml:id="security">
+<title>Security</title>
+<section xml:id="security_introduction">
+<title>Introduction</title>
+<simpara>Guarding against malicious attacks is a great concern for web application developers. In particular, MVC applications that accept
+input from a browser are often targetted by attackers. Two of the most common forms of attacks are cross-site request forgery (CSRF)
+and cross-site scripting (XSS). This chapter explores techniques to prevent these type of attacks with the aid of the MVC API.</simpara>
+</section>
+<section xml:id="cross-site-request-forgery">
+<title>Cross-site Request Forgery</title>
+<simpara>Cross-site Request Forgery (CSRF) is a type of attack in which a user, who has a trust relationship with a certain site, is mislead into
+executing some commands that exploit the existence of such a trust relationship. The canonical example for this attack is that of a user
+unintentionally carrying out a bank transfer while visiting another site.</simpara>
+<simpara>The attack is based on the inclusion of a link or script in a page that accesses a site to which the user is known or assumed to have been
+authenticated (trusted). Trust relationships are often stored in the form of cookies that may be active while the user is visiting other
+sites. For example, such a malicious site could include the following HTML snippet:</simpara>
+<programlisting language="html" linenumbering="unnumbered">&lt;img src="http://yourbank.com/transfer?from=yours&amp;to=mine&amp;sum=1000000"&gt;</programlisting>
+<simpara>This will result in the browser executing a bank transfer in an attempt to load an image.</simpara>
+<simpara>In practice, most sites require the use of form posts to submit requests such as bank transfers. The common way to prevent CSRF attacks is by
+embedding additional, difficult-to-guess data fields in requests that contain sensible commands. This additional data, known as a token, is
+obtained from the trusted site but unlike cookies it is never stored in the browser.</simpara>
+<simpara>MVC implementations provide CSRF protection using the <literal>Csrf</literal> object and the <literal>@CsrfProtected</literal> annotation.
+<phrase role="tck-testable tck-id-csrf-obj">The <literal>Csrf</literal> object is available to applications via the injectable <literal>MvcContext</literal> type or in EL as <literal>mvc.csrf</literal></phrase>.
+For more information about <literal>MvcContext</literal>, please refer to the <xref linkend="mvc_context"/> section.</simpara>
+<simpara><phrase role="tck-testable tck-id-csrf-hidden-field">Applications may use the <literal>Csrf</literal> object to inject a hidden field in a form that can be validated upon submission</phrase>.
+Consider the following JSP:</simpara>
+<programlisting language="html" linenumbering="numbered">&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;CSRF Protected Form&lt;/title&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;form action="csrf" method="post" accept-charset="utf-8"&gt;
+            &lt;input type="submit" value="Click here"/&gt;
+            &lt;input type="hidden" name="${mvc.csrf.name}"
+                value="${mvc.csrf.token}"/&gt;
+        &lt;/form&gt;
+    &lt;/body&gt;
+&lt;/html&gt;</programlisting>
+<simpara>The hidden field will be submitted with the form, giving the MVC implementation the opportunity to verify the token and ensure the
+validity of the post request.</simpara>
+<simpara>Another way to convey this information to and from the client is via an HTTP header.
+<phrase role="tck-testable tck-id-csrf-verify">MVC implementations are REQUIRED to support CSRF tokens both as form fields (with the help of the application developer as shown above) and as HTTP headers</phrase>.</simpara>
+<simpara>The application-level property <literal>javax.mvc.security.CsrfProtection</literal> enables CSRF protection when set to one of the possible values defined in <literal>javax.mvc.security.Csrf.CsrfOptions</literal>.
+<phrase role="tck-testable tck-id-csrf-opt-default">The default value of this property is <literal>CsrfOptions.EXPLICIT</literal></phrase>.
+<phrase role="tck-testable tck-id-csrf-inject-header">Any other value than <literal>CsrfOptions.OFF</literal> will automatically inject a CSRF token as an HTTP header</phrase>.
+<phrase role="tck-testable tck-id-csrf-custom-header-name">The actual name of the header can be configured via the <literal>Csrf.CSRF_HEADER_NAME</literal> configuration property</phrase>.
+<phrase role="tck-testable tck-id-csrf-default-header-name">The default name of the header is <literal>Csrf.DEFAULT_CSRF_HEADER_NAME</literal></phrase>.</simpara>
+<simpara><phrase role="tck-testable tck-id-csrf-implicit">Automatic validation is enabled by setting this property to <literal>CsrfOptions.IMPLICIT</literal>, in which case all post requests must include either an HTTP header or a hidden field with the correct token</phrase>.
+<phrase role="tck-testable tck-id-csrf-explict">Finally, if the property is set to <literal>CsrfOptions.EXPLICIT</literal> then application developers must annotate controllers using <literal>@CsrfProtected</literal> to manually enable validation as shown in the following example</phrase>.</simpara>
+<programlisting language="java" linenumbering="numbered">@Path("csrf")
+@Controller
+public class CsrfController {
+
+    @GET
+    public String getForm() {
+        return "csrf.jsp"; // Injects CSRF token
+    }
+
+    @POST
+    @CsrfProtected // Required for CsrfOptions.EXPLICIT
+    public void postForm(@FormParam("greeting") String greeting) {
+        // Process greeting
+    }
+}</programlisting>
+<simpara><phrase role="tck-testable tck-id-csrf-mediatype">MVC implementations are required to support CSRF validation of tokens for controllers annotated with <literal>@POST</literal> and consuming the media type <literal>x-www-form-urlencoded</literal></phrase>;
+other media types and scenarios may also be supported but are OPTIONAL.</simpara>
+<simpara>If CSRF protection is enabled for a controller method and the CSRF validation fails (because the token is either missing or invalid),
+<phrase role="tck-testable tck-id-csrf-exception">the MVC implementation MUST throw a <literal>javax.mvc.security.CsrfValidationException</literal></phrase>.
+<phrase role="tck-testable tck-id-csrf-default-mapper">The implementation MUST provide a default exception mapper for this exception which handles it by responding with a 403 (Forbidden) status code</phrase>.
+<phrase role="tck-testable tck-id-csrf-custom-mapper">Applications MAY provide a custom exception mapper for <literal>CsrfValidationException</literal> to change this default behavior</phrase>.</simpara>
+</section>
+<section xml:id="cross-site-scripting">
+<title>Cross-site Scripting</title>
+<simpara>Cross-site scripting (XSS) is a type of attack in which snippets of scripting code are injected and later executed when returned back from a
+server. The typical scenario is that of a website with a search field that does not validate its input, and returns an error message that
+includes the value that was submitted. If the value includes a snippet of the form <literal>&lt;script&gt;&#8230;&#8203;&lt;/script&gt;</literal> then it will be executed by the browser when
+the page containing the error is rendered.</simpara>
+<simpara>There are lots of different variations of this the XSS attack, but most can be prevented by ensuring that the data submitted by clients is
+properly <emphasis>sanitized</emphasis> before it is manipulated, stored in a database, returned to the client, etc. Data escaping/encoding is the recommended
+way to deal with untrusted data and prevent XSS attacks.</simpara>
+<simpara><phrase role="tck-testable tck-id-xss-encoders-obj">MVC applications can gain access to encoders through the <literal>MvcContext</literal> object</phrase>;
+<phrase role="tck-testable tck-id-xss-escaping">the methods defined by <literal>javax.mvc.security.Encoders</literal> can be used by applications to contextually encode data in an attempt to prevent XSS attacks</phrase>.
+The reader is referred to the Javadoc for this type for further information.</simpara>
+</section>
+</section>
+<section xml:id="events">
+<title>Events</title>
+<simpara>This chapter introduces a mechanism by which MVC applications can be informed of important events that occur while processing a request.
+This mechanism is based on CDI events that can be fired by implementations and observed by applications.</simpara>
+<section xml:id="observers">
+<title>Observers</title>
+<simpara>The package <literal>javax.mvc.event</literal> defines a number of event types that MUST be fired by implementations during the processing of a request.
+Implementations MAY extend this set and also provide additional information on any of the events defined by this specification.
+The reader is referred to the implementation’s documentation for more information on event support.</simpara>
+<simpara>Observing events can be useful for applications to learn about the lifecycle of a request, perform logging, monitor performance, etc.
+<phrase role="tck-testable tck-id-before-after-controller">The events <literal>BeforeControllerEvent</literal> and <literal>AfterControllerEvent</literal> are fired around the invocation of a controller</phrase>.
+<phrase role="tck-testable tck-id-after-controller-exception">Please note that <literal>AfterControllerEvent</literal> is always fired, even if the controller fails with an exception</phrase>.</simpara>
+<programlisting language="java" linenumbering="numbered">/**
+ * &lt;p&gt;Event fired before a controller is called but after it has been matched.&lt;/p&gt;
+ *
+ * &lt;p&gt;For example:
+ * &lt;pre&gt;&lt;code&gt;    public class EventObserver {
+ *         public void beforeControllerEvent(&amp;#64;Observes BeforeControllerEvent e) {
+ *            ...
+ *        }
+ *    }&lt;/code&gt;&lt;/pre&gt;
+ *
+ * @author Santiago Pericas-Geertsen
+ * @see javax.enterprise.event.Observes
+ * @since 1.0
+ */
+public interface BeforeControllerEvent extends MvcEvent {
+
+    /**
+     * Access to the current request URI information.
+     *
+     * @return URI info.
+     * @see javax.ws.rs.core.UriInfo
+     */
+    UriInfo getUriInfo();
+
+    /**
+     * Access to the current request controller information.
+     *
+     * @return resources info.
+     * @see javax.ws.rs.container.ResourceInfo
+     */
+    ResourceInfo getResourceInfo();
+}</programlisting>
+<programlisting language="java" linenumbering="numbered">/**
+ * &lt;p&gt;Event fired after a controller method returns. This event is always fired,
+ * even if the controller methods fails with an exception. Must be fired after
+ * {@link javax.mvc.event.BeforeControllerEvent}.&lt;/p&gt;
+ *
+ * &lt;p&gt;For example:
+ * &lt;pre&gt;&lt;code&gt;    public class EventObserver {
+ *         public void afterControllerEvent(&amp;#64;Observes AfterControllerEvent e) {
+ *            ...
+ *        }
+ *    }&lt;/code&gt;&lt;/pre&gt;
+ *
+ * @author Santiago Pericas-Geertsen
+ * @author Christian Kaltepoth
+ * @see javax.enterprise.event.Observes
+ * @since 1.0
+ */
+public interface AfterControllerEvent extends MvcEvent {
+
+    /**
+     * Access to the current request URI information.
+     *
+     * @return URI info.
+     * @see javax.ws.rs.core.UriInfo
+     */
+    UriInfo getUriInfo();
+
+    /**
+     * Access to the current request controller information.
+     *
+     * @return resources info.
+     * @see javax.ws.rs.container.ResourceInfo
+     */
+    ResourceInfo getResourceInfo();
+}</programlisting>
+<simpara>Applications can monitor these events using an observer as shown next.</simpara>
+<programlisting language="java" linenumbering="numbered">@ApplicationScoped
+public class EventObserver {
+
+    public void onBeforeController(@Observes BeforeControllerEvent e) {
+        System.out.println("URI: " + e.getUriInfo().getRequestUri());
+    }
+
+    public void onAfterController(@Observes AfterControllerEvent e) {
+        System.out.println("Controller: " +
+        e.getResourceInfo().getResourceMethod());
+    }
+}</programlisting>
+<simpara>Observer methods in CDI are defined using the <literal>@Observes</literal> annotation on a parameter position.
+The class <literal>EventObserver</literal> is a CDI bean in application scope whose methods <literal>onBeforeController</literal> and <literal>onAfterController</literal> are called before and after a controller is called.</simpara>
+<simpara>Each event includes additional information that is specific to the event;
+for example, the events shown in the example above allow applications to get information about the request URI and the resource (controller) selected.</simpara>
+<simpara>The <xref linkend="view_engines"/> section describes the algorithm used by implementations to select a specific view engine for processing; after a view engine is selected, the method <literal>processView</literal> is called.
+<phrase role="tck-testable tck-id-before-after-view">The events <literal>BeforeProcessViewEvent</literal> and <literal>AfterProcessViewEvent</literal> are fired around this call</phrase>.
+<phrase role="tck-testable tck-id-after-view-exception">Please note that <literal>AfterProcessViewEvent</literal> is always fired, even if the view engine fails with an exception</phrase>.</simpara>
+<programlisting language="java" linenumbering="numbered">/**
+ * &lt;p&gt;Event fired after a view engine has been selected but before its
+ * {@link javax.mvc.engine.ViewEngine#processView(javax.mvc.engine.ViewEngineContext)}
+ * method is called. Must be fired after {@link javax.mvc.event.ControllerRedirectEvent},
+ * or if that event is not fired, after {@link javax.mvc.event.AfterControllerEvent}.&lt;/p&gt;
+ *
+ * &lt;p&gt;For example:
+ * &lt;pre&gt;&lt;code&gt;    public class EventObserver {
+ *         public void beforeProcessView(&amp;#64;Observes BeforeProcessViewEvent e) {
+ *            ...
+ *        }
+ *    }&lt;/code&gt;&lt;/pre&gt;
+ *
+ * @author Santiago Pericas-Geertsen
+ * @see javax.enterprise.event.Observes
+ * @since 1.0
+ */
+public interface BeforeProcessViewEvent extends MvcEvent {
+
+    /**
+     * Returns the view being processed.
+     *
+     * @return the view.
+     */
+    String getView();
+
+    /**
+    * Returns the {@link javax.mvc.engine.ViewEngine} selected by the implementation.
+            *
+            * @return the view engine selected.
+            */
+    Class&lt;? extends ViewEngine&gt; getEngine();
+}</programlisting>
+<programlisting language="java" linenumbering="numbered">/**
+ * &lt;p&gt;Event fired after the view engine method
+ * {@link javax.mvc.engine.ViewEngine#processView(javax.mvc.engine.ViewEngineContext)}
+ * returns. This event is always fired, even if the view engine fails with an exception.
+ * Must be fired after {@link javax.mvc.event.BeforeProcessViewEvent}.&lt;/p&gt;
+ *
+ * &lt;p&gt;For example:
+ * &lt;pre&gt;&lt;code&gt;    public class EventObserver {
+ *         public void afterProcessView(&amp;#64;Observes AfterProcessViewEvent e) {
+ *            ...
+ *        }
+ *    }&lt;/code&gt;&lt;/pre&gt;
+ *
+ * @author Santiago Pericas-Geertsen
+ * @author Christian Kaltepoth
+ * @see javax.enterprise.event.Observes
+ * @since 1.0
+ */
+public interface AfterProcessViewEvent extends MvcEvent {
+
+    /**
+     * Returns the view being processed.
+     *
+     * @return the view.
+     */
+    String getView();
+
+    /**
+     * Returns the {@link javax.mvc.engine.ViewEngine} selected by the implementation.
+     *
+     * @return the view engine selected.
+     */
+    Class&lt;? extends ViewEngine&gt; getEngine();
+}</programlisting>
+<simpara>These events can be observed in a similar manner:</simpara>
+<programlisting language="java" linenumbering="numbered">@ApplicationScoped
+public class EventObserver {
+
+    public void onBeforeProcessView(@Observes BeforeProcessViewEvent e) {
+        // ...
+    }
+
+    public void onAfterProcessView(@Observes AfterProcessViewEvent e) {
+        // ...
+    }
+}</programlisting>
+<simpara>To complete the example, let us assume that the information about the selected view engine needs to be conveyed to the client.
+To ensure that this information is available to a view returned to the client,
+the <literal>EventObserver</literal> class can inject and update the same request-scope bean accessed by such a view:</simpara>
+<programlisting language="java" linenumbering="numbered">@ApplicationScoped
+public class EventObserver {
+
+    @Inject
+    private EventBean eventBean;
+
+    public void onBeforeProcessView(@Observes BeforeProcessViewEvent e) {
+        eventBean.setView(e.getView());
+        eventBean.setEngine(e.getEngine());
+    }
+    // ...
+}</programlisting>
+<simpara>For more information about the interaction between views and models, the reader is referred to the <xref linkend="models"/> section.</simpara>
+<simpara><phrase role="tck-testable tck-id-redirect-event">The last event supported by MVC is <literal>ControllerRedirectEvent</literal>, which is fired just before the MVC implementation returns a redirect status code</phrase>.
+<phrase role="tck-testable tck-id-redirect-after-controller-event">Please note that this event MUST be fired after <literal>AfterControllerEvent</literal></phrase>.</simpara>
+<programlisting language="java" linenumbering="numbered">import java.net.URI;
+
+/**
+ * &lt;p&gt;Event fired when a controller triggers a redirect. Only the
+ * status codes 301 (moved permanently), 302 (found), 303 (see other) and
+ * 307 (temporary redirect) are REQUIRED to be reported. Note that the
+ * JAX-RS methods
+ * {@link javax.ws.rs.core.Response#seeOther(java.net.URI)}} and
+ * {@link javax.ws.rs.core.Response#temporaryRedirect(java.net.URI)}}
+ * use the status codes to 303 and 307, respectively. Must be
+ * fired after {@link javax.mvc.event.AfterControllerEvent}.&lt;/p&gt;
+ *
+ * &lt;p&gt;For example:
+ * &lt;pre&gt;&lt;code&gt;    public class EventObserver {
+ *         public void onControllerRedirect(&amp;#64;Observes ControllerRedirectEvent e) {
+ *            ...
+ *        }
+ *    }&lt;/code&gt;&lt;/pre&gt;
+ *
+ * @author Santiago Pericas-Geertsen
+ * @see javax.enterprise.event.Observes
+ * @since 1.0
+ */
+public interface ControllerRedirectEvent extends MvcEvent {
+
+    /**
+     * Access to the current request URI information.
+     *
+     * @return URI info.
+     * @see javax.ws.rs.core.UriInfo
+     */
+    UriInfo getUriInfo();
+
+    /**
+     * Access to the current request controller information.
+     *
+     * @return resources info.
+     * @see javax.ws.rs.container.ResourceInfo
+     */
+    ResourceInfo getResourceInfo();
+
+    /**
+     * The target of the redirection.
+     *
+     * @return URI of redirection.
+     */
+    URI getLocation();
+}</programlisting>
+<simpara>CDI events fired by implementations are <emphasis>synchronous</emphasis>, so it is recommended that applications carry out only simple tasks in their observer methods,
+avoiding long-running computations as well as blocking calls.
+For a complete list of events, the reader is referred to the Javadoc for the <literal>javax.mvc.event</literal> package.</simpara>
+<simpara>Event reporting requires the MVC implementations to create event objects before firing.
+In high-throughput systems without any observers the number of unnecessary objects created may not be insignificant.
+For this reason, it is RECOMMENDED for implementations to consider smart firing strategies when no observers are present.</simpara>
+</section>
+</section>
+<section xml:id="applications">
+<title>Applications</title>
+<simpara>This chapter introduces the notion of an MVC application and explains how it relates to a JAX-RS application.</simpara>
+<section xml:id="mvc_applications">
+<title>MVC Applications</title>
+<simpara>An MVC application consists of one or more JAX-RS resources that are annotated with <literal>@Controller</literal> and, just like JAX-RS applications, zero or more providers.
+If no resources are annotated with <literal>@Controller</literal>, then the resulting application is a JAX-RS application instead.
+In general, everything that applies to a JAX-RS application also applies to an MVC application.
+Some MVC applications may be <emphasis>hybrid</emphasis> and include a mix of MVC controllers and JAX-RS resource methods.</simpara>
+<simpara><phrase role="tck-testable tck-id-application-class">The controllers and providers that make up an application are configured via an application-supplied subclass of <literal>Application</literal> from JAX-RS</phrase>.
+An implementation MAY provide alternate mechanisms for locating controllers, but as in JAX-RS, the use of an <literal>Application</literal> subclass is the only way to guarantee portability.</simpara>
+<simpara><phrase role="tck-testable tck-id-url-space">The path in the application&#8217;s URL space in which MVC controllers live must be specified either using the <literal>@ApplicationPath</literal> annotation on the application subclass or in the web.xml as part of the <literal>url-pattern</literal> element</phrase>.
+MVC applications SHOULD use a non-empty path or pattern: i.e., <emphasis>"/"</emphasis> or <emphasis>"/*"</emphasis> should be avoided whenever possible.
+The reason for this is that MVC implementations often forward requests to the Servlet container,
+and the use of the aforementioned values may result in the unwanted processing of the forwarded request by the JAX-RS servlet once again.</simpara>
+</section>
+<section xml:id="mvc_context">
+<title>MVC Context</title>
+<simpara><phrase role="tck-testable tck-id-injection">MVC applications can inject an instance of <literal>MvcContext</literal> to access configuration, security and path-related information</phrase>.
+<phrase role="tck-testable tck-id-request-scope">Instances of <literal>MvcContext</literal> are provided by implementations and are always in request scope</phrase>.
+<phrase role="tck-testable tck-id-el-access">For convenience, the <literal>MvcContext</literal> instance is also available using the name <literal>mvc</literal> in EL</phrase>.</simpara>
+<simpara>As an example, a view can refer to a controller by using the base path available in the <literal>MvcContext</literal> object as follows:</simpara>
+<programlisting language="html" linenumbering="unnumbered">&lt;a href="${mvc.basePath}/books"&gt;Click here&lt;/a&gt;</programlisting>
+<simpara>For more information on security see the Chapter on <link linkend="security">Security</link>; for more information about the <literal>MvcContext</literal> in general, refer to the Javadoc for the type.</simpara>
+</section>
+<section xml:id="providers_in_mvc">
+<title>Providers in MVC</title>
+<simpara>Implementations are free to use their own providers in order to modify the standard JAX-RS pipeline for the purpose of implementing the MVC semantics.
+Whenever mixing implementation and application providers, care should be taken to ensure the correct execution order using priorities.</simpara>
+</section>
+<section xml:id="annotation_inheritance">
+<title>Annotation Inheritance</title>
+<simpara>MVC applications MUST follow the annotation inheritance rules defined by JAX-RS.
+Namely, MVC annotations may be used on methods of a super-class or an implemented interface.
+<phrase role="tck-testable tck-id-inheritance">Such annotations are inherited by a corresponding sub-class or implementation class method provided that the method does not have any MVC or JAX-RS annotations of its own</phrase>:
+i.e., if a subclass or implementation method has any MVC or JAX-RS annotations then all of the annotations on the superclass or interface method are ignored.</simpara>
+<simpara><phrase role="tck-testable tck-id-class-vs-iface">Annotations on a super-class take precedence over those on an implemented interface</phrase>.
+The precedence over conflicting annotations defined in multiple implemented interfaces is implementation dependent.
+Note that, in accordance to the JAX-RS rules, inheritance of class or interface annotations is not supported.</simpara>
+</section>
+<section xml:id="configuration_in_mvc">
+<title>Configuration in MVC</title>
+<simpara>Implementations MUST support configuration via the native JAX-RS configuration mechanism but MAY support other configuration sources.</simpara>
+<simpara>There are concrete configurations, that all MVC the implementations are <literal>REQUIRED</literal> the support such as:</simpara>
+<itemizedlist>
+<listitem>
+<simpara><literal>ViewEngine.VIEW_FOLDER</literal></simpara>
+</listitem>
+<listitem>
+<simpara><literal>Csrf.CSRF_PROTECTION</literal></simpara>
+</listitem>
+<listitem>
+<simpara><literal>Csrf.CSRF_HEADER_NAME</literal></simpara>
+</listitem>
+</itemizedlist>
+<simpara>Here&#8217;s a simple example of how you can configure a custom location for the view folder other than the <literal>/WEB-INF/views</literal>, simply by overwriting the <literal>getProperties</literal> method of the subclass <literal>Application</literal>:</simpara>
+<programlisting language="java" linenumbering="numbered">@ApplicationPath("resources")
+public class MyApplication extends Application {
+
+    @Override
+    public Map&lt;String, Object&gt; getProperties() {
+        final Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+        map.put(ViewEngine.VIEW_FOLDER, "/jsp/");
+        return map;
+    }
+}</programlisting>
+</section>
+</section>
+<section xml:id="view_engines">
+<title>View Engines</title>
+<simpara>This chapter introduces the notion of a view engine as the mechanism by which views are processed in MVC.
+The set of available view engines is extensible via CDI, enabling applications as well as other frameworks to provide support for additional view languages.</simpara>
+<section xml:id="view_engines_introduction">
+<title>Introduction</title>
+<simpara>A <emphasis>view engine</emphasis> is responsible for processing views. In this context, processing entails (i) locating and loading a view (ii) preparing any
+required models and (iii) rendering the view and writing the result back to the client.</simpara>
+<simpara><phrase role="tck-testable tck-id-jsp-facelets">Implementations MUST provide built-in support for JSPs and Facelets view engines</phrase>.
+Additional engines may be supported via an extension mechanism based on CDI.
+<phrase role="tck-testable tck-id-cdi-discovery">Namely, any CDI bean that implements the <literal>javax.mvc.engine.ViewEngine</literal> interface MUST be considered as a possible target for processing by calling its <literal>supports</literal> method, discarding the engine if this method returns <literal>false</literal></phrase>.</simpara>
+<simpara>This is the interface that must be implemented by all MVC view engines:</simpara>
+<programlisting language="java" linenumbering="numbered">/**
+ * &lt;p&gt;View engines are responsible for processing views and are discovered
+ * using CDI. Implementations must look up all instances of this interface,
+ * and process a view as follows:
+ * &lt;ol&gt;
+ *     &lt;li&gt;Gather the set of candidate view engines by calling {@link #supports(String)}
+ *     and discarding engines that return &lt;code&gt;false&lt;/code&gt;.&lt;/li&gt;
+ *     &lt;li&gt;Sort the resulting set of candidates using priorities. View engines
+ *     can be decorated with {@link javax.annotation.Priority} to indicate
+ *     their priority; otherwise the priority is assumed to be {@link ViewEngine#PRIORITY_APPLICATION}.&lt;/li&gt;
+ *     &lt;li&gt;If more than one candidate is available, choose one in an
+ *     implementation-defined manner.&lt;/li&gt;
+ *     &lt;li&gt;Fire a {@link javax.mvc.event.BeforeProcessViewEvent} event.&lt;/li&gt;
+ *     &lt;li&gt;Call method {@link #processView(ViewEngineContext)} to process view.&lt;/li&gt;
+ *     &lt;li&gt;Fire a {@link javax.mvc.event.AfterProcessViewEvent} event.&lt;/li&gt;
+ * &lt;/ol&gt;
+ * &lt;p&gt;The default view engines for JSPs and Facelets use file extensions to determine
+ * support. Namely, the default JSP view engine supports views with extensions &lt;code&gt;jsp&lt;/code&gt;
+ * and &lt;code&gt;jspx&lt;/code&gt;, and the one for Facelets supports views with extension
+ * &lt;code&gt;xhtml&lt;/code&gt;.&lt;/p&gt;
+ *
+ * @author Santiago Pericas-Geertsen
+ * @see javax.annotation.Priority
+ * @see javax.mvc.event.BeforeProcessViewEvent
+ * @since 1.0
+ */
+@SuppressWarnings("unused")
+public interface ViewEngine {
+
+    /**
+     * Name of property that can be set to override the root location for views in an archive.
+     *
+     * @see javax.ws.rs.core.Application#getProperties()
+     */
+    String VIEW_FOLDER = "javax.mvc.engine.ViewEngine.viewFolder";
+
+    /**
+     * Default value for property {@link #VIEW_FOLDER}.
+     */
+    String DEFAULT_VIEW_FOLDER = "/WEB-INF/views/";
+
+    /**
+     * Priority for all built-in view engines.
+     */
+    int PRIORITY_BUILTIN = 1000;
+
+    /**
+     * Recommended priority for all view engines provided by frameworks built
+     * on top of MVC implementations.
+     */
+    int PRIORITY_FRAMEWORK = 2000;
+
+    /**
+     * Recommended priority for all application-provided view engines (default).
+     */
+    int PRIORITY_APPLICATION = 3000;
+
+    /**
+     * Returns &lt;code&gt;true&lt;/code&gt; if this engine can process the view or &lt;code&gt;false&lt;/code&gt;
+     * otherwise.
+     *
+     * @param view the view.
+     * @return outcome of supports test.
+     */
+    boolean supports(String view);
+
+    /**
+     * &lt;p&gt;Process a view given a {@link javax.mvc.engine.ViewEngineContext}. Processing
+     * a view involves &lt;i&gt;merging&lt;/i&gt; the model and template data and writing
+     * the result to an output stream.&lt;/p&gt;
+     *
+     * &lt;p&gt;Following the Java EE threading model, the underlying view engine implementation
+     * must support this method being called by different threads. Any resources allocated
+     * during view processing must be released before the method returns.&lt;/p&gt;
+     *
+     * @param context the context needed for processing.
+     * @throws ViewEngineException if an error occurs during processing.
+     */
+    void processView(ViewEngineContext context) throws ViewEngineException;
+}</programlisting>
+</section>
+<section xml:id="selection_algorithm">
+<title>Selection Algorithm</title>
+<simpara><phrase role="tck-testable tck-id-selection-algo">Implementations should perform the following steps while trying to find a suitable view engine for a view</phrase>.</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>Lookup all instances of <literal>javax.mvc.engine.ViewEngine</literal> available via CDI.</simpara>
+</listitem>
+<listitem>
+<simpara>Call <literal>supports</literal> on every view engine found in the previous step, discarding those that return <literal>false</literal>.</simpara>
+</listitem>
+<listitem>
+<simpara>If the resulting set is empty, return <literal>null</literal>.</simpara>
+</listitem>
+<listitem>
+<simpara>Otherwise, sort the resulting set in descending order of priority using the integer value from the <literal>@Priority</literal> annotation decorating the view engine class or the default value <literal>ViewEngine.PRIORITY_APPLICATION</literal> if the annotation is not present.</simpara>
+</listitem>
+<listitem>
+<simpara>Return the first element in the resulting sorted set, that is, the view engine with the highest priority that supports the given view.</simpara>
+</listitem>
+</orderedlist>
+<simpara>If a view engine that can process a view is not found, implementations SHOULD throw a corresponding exception and stop to process the request.</simpara>
+<simpara>The <literal>processView</literal> method has all the information necessary for processing in the <literal>ViewEngineContext</literal>, including the view, a reference to <literal>Models</literal>, as well as the underlying <literal>OutputStream</literal> that can be used to send the result to the client.</simpara>
+<simpara>Prior to the view render phase, all entries available in <literal>Models</literal> MUST be bound in such a way that they become available to the view being processed.
+The exact mechanism for this depends on the actual view engine implementation.
+<phrase role="tck-testable tck-id-models-binding">In the case of the built-in view engines for JSPs and Facelets, entries in <literal>Models</literal> must be bound by calling <literal>HttpServletRequest.setAttribute(String, Object)</literal></phrase>.
+Calling this method ensures access to the named models from EL expressions.</simpara>
+<simpara>A view returned by a controller method represents a path within an application archive.
+<phrase role="tck-testable tck-id-path-relative">If the path is relative, does not start with <literal>/</literal>, implementations MUST resolve view paths relative to the view folder, which defaults to <literal>/WEB-INF/views/</literal></phrase>.
+<phrase role="tck-testable tck-id-path-absolute">If the path is absolute, no further processing is required</phrase>.
+It is recommended to use relative paths and a location under <literal>WEB-INF</literal> to prevent direct access to views as static resources.</simpara>
+</section>
+<section xml:id="faces_servlet">
+<title>FacesServlet</title>
+<simpara>Because Facelets support is not enabled by default, MVC applications that use Facelets are required to package a <literal>web.xml</literal> deployment descriptor with the following entry mapping the extension <literal>*.xhtml</literal> as shown next:</simpara>
+<programlisting language="xml" linenumbering="numbered">&lt;servlet&gt;
+    &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;javax.faces.webapp.FacesServlet&lt;/servlet-class&gt;
+    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;*.xhtml&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</programlisting>
+<simpara>Alternatively to a <literal>web.xml</literal> deployment descriptor an empty <literal>faces-config.xml</literal> file can be placed in the <literal>WEB-INF</literal> folder to enable Facelets support.</simpara>
+<simpara>It is worth noting that if you opt to use Facelets as a view technology for your MVC application, regular JSF post-backs will not be processed by the MVC runtime.
+The usage of <literal>&lt;h:form /&gt;</literal> and depending form components like <literal>&lt;h:inputText /&gt;</literal> is not recommended as they would be the entry point to a real JSF application.</simpara>
+</section>
+</section>
+<section xml:id="i18n">
+<title>Internationalization</title>
+<simpara>This chapter introduces the notion of a <emphasis>request locale</emphasis> and describes how MVC handles internationalization and localization.</simpara>
+<section xml:id="i18n_introduction">
+<title>Introduction</title>
+<simpara>Internationalization and localization are very important concepts for any web application framework.
+Therefore MVC has been designed to make supporting multiple languages and regional differences in applications very easy.</simpara>
+<simpara>MVC defines the term <emphasis>request locale</emphasis> as the locale which is used for any locale-dependent operation within the lifecycle of a request.
+The request locale MUST be resolved exactly once for each request using the resolving algorithm described in the <xref linkend="i18n_resolving_algorithm"/> section.</simpara>
+<simpara>These locale-dependent operations include, but are not limited to:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>Data type conversion as part of the data binding mechanism.</simpara>
+</listitem>
+<listitem>
+<simpara>Formatting of data when rendering it to the view.</simpara>
+</listitem>
+<listitem>
+<simpara>Generating binding and validation error messages in the specific language.</simpara>
+</listitem>
+</orderedlist>
+<simpara><phrase role="tck-testable tck-id-mvc-context-locale">The request locale is available from <literal>MvcContext</literal> and can be used by controllers, view engines and other components</phrase> to perform operations which depend on the current locale.
+The example below shows a controller that uses the request locale to create a <literal>NumberFormat</literal> instance.</simpara>
+<programlisting language="java" linenumbering="numbered">@Controller
+@Path("/foobar")
+public class MyController {
+
+    @Inject
+    private MvcContext mvc;
+
+    @GET
+    public String get() {
+        Locale locale = mvc.getLocale();
+        NumberFormat format = NumberFormat.getInstance(locale);
+    }
+}</programlisting>
+<simpara>The following sections will explain the locale resolving algorithm and the default resolver provided by the MVC implementation.</simpara>
+</section>
+<section xml:id="i18n_resolving_algorithm">
+<title>Resolving Algorithm</title>
+<simpara>The <emphasis>locale resolver</emphasis> is responsible to detect the request locale for each request processed by the MVC runtime.
+A locale resolver MUST implement the <literal>javax.mvc.locale.LocaleResolver</literal> interface which is defined like this:</simpara>
+<programlisting language="java" linenumbering="numbered">/**
+ * &lt;p&gt;Locale resolvers are used to determine the locale of the current request and are discovered
+ * using CDI.&lt;/p&gt;
+ *
+ * &lt;p&gt;The MVC implementation is required to resolve the locale for each request following this
+ * algorithm:&lt;/p&gt;
+ *
+ * &lt;ol&gt;
+ * &lt;li&gt;Gather the set of all implementations of this interface available for injection via
+ * CDI.&lt;/li&gt;
+ * &lt;li&gt;Sort the set of implementations using priorities in descending order. Locale resolvers
+ * can be decorated with {@link javax.annotation.Priority} to indicate their priority. If no
+ * priority is explicitly defined, the priority is assumed to be &lt;code&gt;1000&lt;/code&gt;.&lt;/li&gt;
+ * &lt;li&gt;Call the method {@link #resolveLocale(LocaleResolverContext)}. If the resolver returns
+ * a valid locale, use this locale as the request locale. If the resolver returns
+ * &lt;code&gt;null&lt;/code&gt;, proceed with the next resolver in the ordered set.&lt;/li&gt;
+ * &lt;/ol&gt;
+ *
+ * &lt;p&gt;Controllers, view engines and other components can access the resolved locale by calling
+ * {@link MvcContext#getLocale()}.&lt;/p&gt;
+ *
+ * &lt;p&gt;The MVC implementation is required to provide a default locale resolver with a priority
+ * of &lt;code&gt;0&lt;/code&gt; which uses the &lt;code&gt;Accept-Language&lt;/code&gt; request header to obtain the
+ * locale. If resolving the locale this way isn't possible, the default resolver must return
+ * {@link Locale#getDefault()}.&lt;/p&gt;
+ *
+ * @author Christian Kaltepoth
+ * @see javax.mvc.locale.LocaleResolverContext
+ * @see MvcContext#getLocale()
+ * @see java.util.Locale
+ * @since 1.0
+ */
+public interface LocaleResolver {
+
+    /**
+     * &lt;p&gt;Resolve the locale of the current request given a {@link LocaleResolverContext}.&lt;/p&gt;
+     *
+     * &lt;p&gt;If the implementation is able to resolve the locale for the request, the corresponding
+     * locale must be returned. If the implementation cannot resolve the locale, it must return
+     * &lt;code&gt;null&lt;/code&gt;. In this case the resolving process will continue with the next
+     * resolver.&lt;/p&gt;
+     *
+     * @param context the context needed for processing.
+     * @return The resolved locale or &lt;code&gt;null&lt;/code&gt;.
+     */
+    Locale resolveLocale(LocaleResolverContext context);
+
+}</programlisting>
+<simpara>There may be more than one locale resolver for a MVC application. Locale resolvers are discovered using CDI.
+<phrase role="tck-testable tck-id-resolver-discovery">Every CDI bean implementing the <literal>LocaleResolver</literal> interface and visible to the application participates in the locale resolving algorithm</phrase>.</simpara>
+<simpara><phrase role="tck-testable tck-id-resolve-algorithm">Implementations MUST use the following algorithm to resolve the request locale for each request</phrase>:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>Obtain a list of all CDI beans implementing the <literal>LocaleResolver</literal> interface visible to the application’s <literal>BeanManager</literal>.</simpara>
+</listitem>
+<listitem>
+<simpara>Sort the list of locale resolvers in descending order of priority using the integer value from the <literal>@Priority</literal> annotation decorating the resolver class.<?asciidoc-br?>
+If no <literal>@Priority</literal> annotation is present, assume a default priority of <literal>1000</literal>.</simpara>
+</listitem>
+<listitem>
+<simpara>Call <literal>resolveLocale()</literal> on the first resolver in the list. If the resolver returns <literal>null</literal>, continue with the next resolver in the list.<?asciidoc-br?>
+If a resolver returns a non-null result, stop the algorithm and use the returned locale as the request locale.</simpara>
+</listitem>
+</orderedlist>
+<simpara>Applications can either rely on the default locale resolver which is described in the <xref linkend="i18n_default_resolver"/> section
+or provide a custom resolver which implements some other strategy for resolving the request locale.
+A custom strategy could for example track the locale using the session, a query parameter or the server’s hostname.</simpara>
+</section>
+<section xml:id="i18n_default_resolver">
+<title>Default Locale Resolver</title>
+<simpara><phrase role="tck-testable tck-id-default-locale-resolver">Every MVC implementation MUST provide a default locale resolver with a priority of <literal>0</literal> which resolves the request locale according to the following algorithm</phrase>:</simpara>
+<orderedlist numeration="arabic">
+<listitem>
+<simpara>First check whether the client provided an <literal>Accept-Language</literal> request header. If this is the case, the locale with the highest quality factor is returned as the result.</simpara>
+</listitem>
+<listitem>
+<simpara>If the previous step was not successful, return the system default locale of the server.</simpara>
+</listitem>
+</orderedlist>
+<simpara>Please note that applications can customize the locale resolving process by providing a custom locale resolver with a priority higher than <literal>0</literal>.
+See the <xref linkend="i18n_resolving_algorithm"/> section for details.</simpara>
+</section>
+</section>
+<appendix xml:id="annotation_table">
+<title>Summary of Annotations</title>
+<informaltable frame="all" rowsep="1" colsep="1">
+<tgroup cols="3">
+<colspec colname="col_1" colwidth="25*"/>
+<colspec colname="col_2" colwidth="25*"/>
+<colspec colname="col_3" colwidth="50*"/>
+<thead>
+<row>
+<entry align="left" valign="top">Annotation</entry>
+<entry align="left" valign="top">Target</entry>
+<entry align="left" valign="top">Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+<entry align="left" valign="top"><simpara><literal>Controller</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>Type or method</simpara></entry>
+<entry align="left" valign="top"><simpara>Defines a resource method as an MVC controller. If
+specified at the type level, it defines all methods in a class
+as controllers.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>View</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>Type or method</simpara></entry>
+<entry align="left" valign="top"><simpara>Declares a view for a controller method that returns void.
+If specified at the type level, it applies to all controller
+methods that return void in a class.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>CsrfValid</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>Method</simpara></entry>
+<entry align="left" valign="top"><simpara>States that a CSRF token must be validated before
+invoking the controller. Failure to validate the CSRF
+token results in a <literal>ForbiddenException</literal> thrown.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>RedirectScoped</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>Type, method or field</simpara></entry>
+<entry align="left" valign="top"><simpara>Specifies that a certain bean is in redirect scope.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>UriRef</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>Method</simpara></entry>
+<entry align="left" valign="top"><simpara>Defines a symbolic name for a controller method.</simpara></entry>
+</row>
+<row>
+<entry align="left" valign="top"><simpara><literal>MvcBinding</literal></simpara></entry>
+<entry align="left" valign="top"><simpara>Field, method or parameter</simpara></entry>
+<entry align="left" valign="top"><simpara>Declares that constraint violations will be handled by a
+controller through <literal>BindingResult</literal> instead of triggering
+a <literal>ConstraintViolationException</literal>.</simpara></entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</appendix>
+<bibliography xml:id="bibliography">
+<title>Bibliography</title>
+<variablelist xml:id="jsf22">
+<varlistentry>
+<term>[1]</term>
+<listitem>
+<simpara>Edward Burns. JavaServer Faces 2.2. JSR, JCP, May 2013<?asciidoc-br?>
+<link xl:href="http://jcp.org/en/jsr/detail?id=344">http://jcp.org/en/jsr/detail?id=344</link></simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist xml:id="cdi11">
+<varlistentry>
+<term>[2]</term>
+<listitem>
+<simpara>Pete Muir. Context and Dependency Injection for Java EE 1.1 MR. JSR, JCP, April 2014<?asciidoc-br?>
+<link xl:href="http://jcp.org/en/jsr/detail?id=346">http://jcp.org/en/jsr/detail?id=346</link></simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist xml:id="bv11">
+<varlistentry>
+<term>[3]</term>
+<listitem>
+<simpara>Emmanuel Bernard. Bean Validation 1.1. JSR, JCP, March 2013<?asciidoc-br?>
+<link xl:href="http://jcp.org/en/jsr/detail?id=349">http://jcp.org/en/jsr/detail?id=349</link></simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist xml:id="rfc2119">
+<varlistentry>
+<term>[4]</term>
+<listitem>
+<simpara>S. Bradner. RFC 2119: Keywords for use in RFCs to Indicate Requirement Levels. RFC, IETF, March 1997<?asciidoc-br?>
+<link xl:href="http://www.ietf.org/rfc/rfc2119.txt">http://www.ietf.org/rfc/rfc2119.txt</link></simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist xml:id="jaxrs20">
+<varlistentry>
+<term>[5]</term>
+<listitem>
+<simpara>Santiago Pericas-Geertsen and Marek Potociar. The Java API for RESTful Web Services 2.0 MR. JSR, JCP, October 2014<?asciidoc-br?>
+<link xl:href="http://jcp.org/en/jsr/detail?id=339">http://jcp.org/en/jsr/detail?id=339</link></simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+<variablelist xml:id="el30">
+<varlistentry>
+<term>[6]</term>
+<listitem>
+<simpara>Kin man Chung. Expression Language 3.0. JSR, JCP, May 2013<?asciidoc-br?>
+<link xl:href="http://jcp.org/en/jsr/detail?id=341">http://jcp.org/en/jsr/detail?id=341</link></simpara>
+</listitem>
+</varlistentry>
+</variablelist>
+</bibliography>
+</article>
